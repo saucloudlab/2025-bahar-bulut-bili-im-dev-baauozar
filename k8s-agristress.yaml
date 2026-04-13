@@ -1,0 +1,107 @@
+# 1. إعدادات قاعدة البيانات PostgreSQL
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    app: db
+  ports:
+    - port: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+            - name: POSTGRES_DB
+              value: "agristress"
+
+---
+# 2. إعدادات خدمة الذكاء الاصطناعي Vision (Python)
+apiVersion: v1
+kind: Service
+metadata:
+  name: vision
+spec:
+  selector:
+    app: vision
+  ports:
+    - port: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vision
+  template:
+    metadata:
+      labels:
+        app: vision
+    spec:
+      containers:
+        - name: vision
+          image: agristress-vision:latest
+          imagePullPolicy: Never # يجبر النظام على استخدام الصورة المحلية التي بنيناها
+          ports:
+            - containerPort: 8000
+
+---
+# 3. إعدادات خدمة الإدارة API (.NET)
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+spec:
+  type: NodePort # يسمح لنا بالوصول للخدمة من المتصفح الخارجي
+  selector:
+    app: api
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: agristress-api:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Host=db;Database=agristress;Username=postgres;Password=postgres"

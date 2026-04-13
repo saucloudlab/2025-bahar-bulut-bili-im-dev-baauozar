@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CoreApiService.Api/CoreApiService.Api.csproj" />
+  <Project Path="CoreApiService.Application/CoreApiService.Application.csproj" />
+  <Project Path="CoreApiService.Domain/CoreApiService.Domain.csproj" />
+  <Project Path="CoreApiService.Infrastructure/CoreApiService.Infrastructure.csproj" />
+</Solution>
