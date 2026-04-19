@@ -7,5 +7,6 @@ namespace CoreApiService.Domain.Entities
         public string Status { get; set; } = "Pending";
         public string? XaiResult { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string? VisualExplanation { get; set; }
     }
 }

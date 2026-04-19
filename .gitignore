@@ -1,0 +1,27 @@
+# .NET Build Output
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+
+# Compiled files
+*.dll
+*.exe
+*.pdb
+*.user
+*.suo
+
+# Build & Cache
+.DS_Store
+node_modules/
+dist/
+
+# Docker
+.dockerignore
+
+# Python Virtual Environments & Caches
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc

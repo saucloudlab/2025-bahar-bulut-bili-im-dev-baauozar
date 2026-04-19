@@ -9,5 +9,6 @@ namespace CoreApiService.Application.DTOs
         public string Status { get; set; } = string.Empty;
         public string? XaiResult { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string VisualExplanation { get; set; }
     }
 }
